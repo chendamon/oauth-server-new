@@ -54,11 +54,6 @@ var handleRegister = function(req,res,next){
     }
     req.session.user = user;
     next();
-    // Client.findOne({clientId:req.body.clientId},function(err,client){
-    //   if(err || !client) return next(err);
-    //   //req.session.client = client;
-    //   next(null,client,user);
-    // });
   });
 }
 

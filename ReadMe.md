@@ -1,4 +1,3 @@
-#### authorize handler
-只接收 oauth-server 定义的 request，response
-request应该包含request.body.client_id || request.query.client_id; request.body.redirect_uri || request.query.redirect_uri;
-passwordgranttype里边才有getUser的具体实现，需要request里边有
+## Oauth-Server-New
+Simple Express Authorization Code Grant Example for [Nextcloud](https://nextcloud.com/)'s Custom App '[Social Login](https://github.com/zorn-v/nextcloud-social-login)' Based on module '[oauth2-server](https://npmjs.org/package/oauth2-server
+)'.
