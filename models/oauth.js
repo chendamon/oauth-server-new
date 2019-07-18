@@ -1,4 +1,4 @@
-var User = require('./user');
+var User = require('./userHandler');
 var Client = require('./client');
 var Code = require('./codeHandler');
 var Token = require('./tokenHandler');

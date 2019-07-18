@@ -12,7 +12,6 @@
     <script type="text/javascript" src="/javascripts/errormessage.js"></script>
     <script type="text/javascript">
       function revoke(){
-        console.log('hjahahh');
         document.getElementById('login_form').style.display = "none";
         document.getElementById('register_form').style.display = "block";
       }
@@ -60,9 +59,9 @@
             <div class="form-group">
               <input class="btn btn-success btn-block" type="submit" value="注册" />
             </div>
-            <% if (locals.message) { %>
-              <h4 class="col-sm-12 col-md-12 errormessage"><%= message %></h4>
-            <% } locals.message = [];%>
+            <% if (locals.remessage) { %>
+              <h4 class="col-sm-12 col-md-12 errormessage"><%= remessage %></h4>
+            <% } locals.remessage = [];%>
           </div>
         </form>
         <% if(locals.register) { %>
