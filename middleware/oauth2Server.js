@@ -5,7 +5,7 @@ var Token = require('../models/token');
 var server = new oauthServer({
   model:models,
   grants:['authorization_code','refresh_token'],
-  accessTokenLifetime:60 * 60,//1 hour
+  accessTokenLifetime:60,//1 min
   refreshTokenLifetime:60 * 60 * 24,//1 day
   authorizationCodeLifetime:60 * 5,//5 mins
   alwaysIssueNewRefreshToken:true,

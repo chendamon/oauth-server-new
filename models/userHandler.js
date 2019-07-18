@@ -9,7 +9,7 @@ function hashPassword(password){
 }
 
 //用户注册
-var registerUser = function(userId,password,username,cb){
+var registerUser =  function(userId,password,username,cb){
   //先查看是否当前userid已经存在
   User.findOne({userId:userId},function(err,a_user){
     if(a_user){

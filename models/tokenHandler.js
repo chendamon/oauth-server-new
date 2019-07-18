@@ -1,6 +1,6 @@
 var Token = require('./token');
 
-var saveToken = function(token, client, user){
+var saveToken = async function(token, client, user){
   console.log('[saveToken] Saving token.....');
   var accessToken = new Token({
     accessToken:token.accessToken,
@@ -13,7 +13,7 @@ var saveToken = function(token, client, user){
     refreshTokenExpiresAt:token.refreshTokenExpiresAt,
     scope:token.scope,
   });
-  accessToken.save(function(err){
+  await accessToken.save(function(err){
     if(err) return err;
   });
   return new Promise(resolve =>{
@@ -21,17 +21,17 @@ var saveToken = function(token, client, user){
   });
 }
 
-var getAccessToken = function(accessToken){
+var getAccessToken = async function(accessToken){
   console.log('[getAccessToken] Getting token.....');
-  var token = Token.findOne({accessToken:accessToken});
+  var token = await Token.findOne({accessToken:accessToken});
   return new Promise(resolve => {
     resolve(token);
   });
 }
 
-var revokeToken = function(token){
+var revokeToken = async function(token){
   console.log('[revokeToken] Revoking token.....');
-  Token.deleteOne({accessToken:token.accessToken},function(err){
+  await Token.deleteOne({accessToken:token.accessToken},function(err){
     if(err) return err;
   });
   return new Promise(resolve => {
@@ -39,9 +39,9 @@ var revokeToken = function(token){
   });
 }
 
-var getRefreshToken = function(refreshToken){
+var getRefreshToken = async function(refreshToken){
   console.log('[getRefreshToken] Getting refreshtoken.....');
-  var retoken = Token.findOne({refreshToken:refreshToken});
+  var retoken = await Token.findOne({refreshToken:refreshToken});
   return new Promise(resolve => {
     resolve(retoken);
   });

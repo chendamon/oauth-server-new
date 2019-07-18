@@ -1,7 +1,7 @@
 var Code = require('./code');
 
-var saveAuthorizationCode = function (authorizationCode, client, user){
-  console.log('[saveAuthorizationCode] Saving authCode.....');
+var saveAuthorizationCode = async function (authorizationCode, client, user){
+  console.log('[saveAuthorizationCode] Saving authCode.....',authorizationCode.authorizationCode);
   var s_code = new Code({
     authorizationCode:authorizationCode.authorizationCode,
     expiresAt:authorizationCode.expiresAt,
@@ -9,27 +9,24 @@ var saveAuthorizationCode = function (authorizationCode, client, user){
     user:user,
     redirectUri:authorizationCode.redirectUri,
   });
-
-  s_code.save(function(err){
-    if(err){
-      return next(err);
-    }
+  await s_code.save((err)=>{
+    if(err) return err;
+  });
+  return new Promise(resolve => {
+    resolve(s_code);
   });
 
-  return new Promise(resolve => {
-      resolve(s_code);
-    });
 }
-var getAuthorizationCode = function(authorizationCode){
+var getAuthorizationCode = async function(authorizationCode){
   console.log('[getAuthorizationCode] Getting authCode.....');
-  var authcode = Code.findOne({authorizationCode:authorizationCode});
+  var authcode = await Code.findOne({authorizationCode:authorizationCode});
   return new Promise(resolve => {
       resolve(authcode);
   });
 }
-var revokeAuthorizationCode = function(code){
+var revokeAuthorizationCode = async function(code){
   console.log('[revokeAuthorizationCode] Revoking authCode.....',code.authorizationCode);
-  Code.deleteOne({authorizationCode:code.authorizationCode},(err)=>{
+  await Code.deleteOne({authorizationCode:code.authorizationCode},(err)=>{
     if(err) return err;
   });
   return new Promise(resolve => {
