@@ -11,6 +11,7 @@ var server = new oauthServer({
   alwaysIssueNewRefreshToken:true,
   allowEmptyState:true,
   allowBearerTokensInQueryString:true,
+  //requireClientAuthentication:{'refresh_token':false},
 });
 
 var authorization = function(req,res){
@@ -42,9 +43,20 @@ var userinfo = function(req,res){
   // var user = req.session.user;
   // res.json({identifier:user.userId,displayName:user.username,Quota:'10'});
 }
+//refresh_token pre work
+var token_pre = async function(req,res,next){
+  if(req.body.grant_type === 'refresh_token'){
+    console.log('refresh_token');
+    var token = await Token.findOne({refreshToken:req.body.refresh_token});
+    req.body.client_id = token.client.clientId;
+    req.body.client_secret = token.client.clientSecret;
+  }
+  next();
+}
 module.exports = {
   server:server,
   authorization:authorization,
   authorize_pre:authorize_pre,
   userinfo:userinfo,
+  token_pre:token_pre,
 };

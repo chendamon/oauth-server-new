@@ -71,9 +71,19 @@ router.route('/oauth/authorize')
     }
   }));
 //Token part
-router.route('/oauth/token').post(oauth2server.server.token({ }));
+router.route('/oauth/token').post(oauth2server.token_pre,oauth2server.server.token({ }));
+// router.route('/oauth/token').post((req,res)=>{
+//   console.log('token req',req);
+// });
 //Authenticate part
 router.route('/userinfo').get(oauth2server.server.authenticate({
 }),oauth2server.userinfo);
+// router.route('/userinfo').get((req,res)=>{
+//   console.log('info req',req);
+// });
 
-module.exports = app;
+//module.exports = app;
+app.set('port', process.env.PORT || 3000);
+var server = app.listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + server.address().port);
+});
