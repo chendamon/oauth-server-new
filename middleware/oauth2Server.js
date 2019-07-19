@@ -35,13 +35,12 @@ var authorize_pre = function(req,res,next){
 }
 
 var userinfo = function(req,res){
+  console.log('[userinfo] app already got user info page ');
   console.log(req.headers.authorization.split(' ')[1]);
   Token.findOne({accessToken:req.headers.authorization.split(' ')[1]},(err,token)=>{
     if(err) {res.json(err); return;}
     res.json({identifier:token.user.userId,displayName:token.user.username,Quota:'10'});
   });
-  // var user = req.session.user;
-  // res.json({identifier:user.userId,displayName:user.username,Quota:'10'});
 }
 //refresh_token pre work
 var token_pre = async function(req,res,next){
