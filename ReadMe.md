@@ -22,4 +22,9 @@ I used **[oauth2-server](https://npmjs.org/package/oauth2-server
 
 **Authorize**
 
-for authorize, oauth2-server module use `authorize-handler`,basic flow
+For authorize process, oauth2-server module uses so called `authorize-handler`（*`node-oauth-server/lib/handlers/authorize-handler.js`*）, in this part **Social Login** will `POST` a query to get authorization code, just like `http://server_addresss/oauth/authorize?response_type=code&client_id=_nextcloud&redirect_uri=redirect_uri&scope=&state=HA-GOVXLJMQZB7NW3FH8UYCA50RS9IDK26T14PE`, basic flow is:
+1. **`getClient()`**: from `request.body` get `client_id` and `client_secret`,then get a client object, you need to implement this function in your own models;
+2. **`getUser()`**: from `request.body` or `requset.session` get `user_id`,then get a user object, you need to implement this function in your own models;
+3. **`generateAuthorizationCode()`**:use client object & user object generate one authorizationcode, module has done this for you;
+4. **`saveAuthorizationCode`**: save authorization code, you need to implement this function in your own models;
+5. oauth server return a response with code `http://redirect_uri&code=your_code&state=some_state`;
