@@ -22,7 +22,7 @@ var saveAuthorizationCode = async function (authorizationCode, client, user){
 var getAuthorizationCode = async function(authorizationCode){
   console.log('[getAuthorizationCode] Getting authCode.....',authorizationCode);
   var authcode = await Code.findOne({authorizationCode:authorizationCode});
-  console.log('[getAuthorizationCode] get authCode.....',authcode);
+  console.log('[getAuthorizationCode] get authCode.....',authcode.authorizationCode);
   return new Promise(resolve => {
       resolve(authcode);
   });

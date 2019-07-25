@@ -1,17 +1,17 @@
 var oauthServer = require('express-oauth-server');
 var models = require('../models/oauth');
 var Token = require('../models/token');
+var config = require('../config');
 
 var server = new oauthServer({
   model:models,
   grants:['authorization_code','refresh_token'],
-  accessTokenLifetime:60,//1 min
+  accessTokenLifetime:60*60,//1 hour
   refreshTokenLifetime:60 * 60 * 24,//1 day
   authorizationCodeLifetime:60 * 5,//5 mins
   alwaysIssueNewRefreshToken:true,
   allowEmptyState:true,
   allowBearerTokensInQueryString:true,
-  //requireClientAuthentication:{'refresh_token':false},
 });
 
 var authorization = function(req,res){
@@ -60,12 +60,15 @@ var token_pre = async function(req,res,next){
 这样等于是默认用户在登出操作之后已经取消了授权。
 */
 var logout = function(req,res){
+  var clientId = req.session.client.clientId;
+
   //删除该用户相关的token
   Token.deleteMany({userId:req.session.user.userId}).then(
     ()=>{
       req.session.user = null;
       req.session.client = null;
-      res.redirect('http://localhost:9000/login/');
+      console.log('[logout] user logout');
+      res.redirect(config.get(clientId));
     }
   );
 }
