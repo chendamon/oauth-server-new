@@ -82,6 +82,9 @@ router.route('/userinfo').get(oauth2server.server.authenticate({
 //   console.log('info req',req);
 // });
 
+//07.24 logout测试
+router.route('/oauth/logout').get(oauth2server.logout);
+
 module.exports = app;
 
 //nodemon 代码更改后自动refresh用

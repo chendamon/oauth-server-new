@@ -1,4 +1,5 @@
 var Code = require('./code');
+var sleep = require('sleep');
 
 var saveAuthorizationCode = async function (authorizationCode, client, user){
   console.log('[saveAuthorizationCode] Saving authCode.....',authorizationCode.authorizationCode);
@@ -12,14 +13,16 @@ var saveAuthorizationCode = async function (authorizationCode, client, user){
   await s_code.save((err)=>{
     if(err) return err;
   });
+  sleep.msleep(500);
   return new Promise(resolve => {
     resolve(s_code);
   });
 
 }
 var getAuthorizationCode = async function(authorizationCode){
-  console.log('[getAuthorizationCode] Getting authCode.....');
+  console.log('[getAuthorizationCode] Getting authCode.....',authorizationCode);
   var authcode = await Code.findOne({authorizationCode:authorizationCode});
+  console.log('[getAuthorizationCode] get authCode.....',authcode);
   return new Promise(resolve => {
       resolve(authcode);
   });

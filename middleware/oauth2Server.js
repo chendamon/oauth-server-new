@@ -39,10 +39,13 @@ var userinfo = function(req,res){
   console.log(req.headers.authorization.split(' ')[1]);
   Token.findOne({accessToken:req.headers.authorization.split(' ')[1]},(err,token)=>{
     if(err) {res.json(err); return;}
-    res.json({identifier:token.user.userId,displayName:token.user.username,Quota:'10'});
+    //07.24 测试group 增加group sg
+    res.json({identifier:token.user.userId,displayName:token.user.username,Quota:'10',Group:'SG'});
   });
 }
-//refresh_token pre work
+/*
+处理refresh_token，如果请求类型为refreshtoken，直接补全body参数
+*/
 var token_pre = async function(req,res,next){
   if(req.body.grant_type === 'refresh_token'){
     console.log('refresh_token');
@@ -52,10 +55,25 @@ var token_pre = async function(req,res,next){
   }
   next();
 }
+/*
+处理用户登出操作，直接将session中内容清空，避免出现登录再重复授权的情况；
+这样等于是默认用户在登出操作之后已经取消了授权。
+*/
+var logout = function(req,res){
+  //删除该用户相关的token
+  Token.deleteMany({userId:req.session.user.userId}).then(
+    ()=>{
+      req.session.user = null;
+      req.session.client = null;
+      res.redirect('http://localhost:9000/login/');
+    }
+  );
+}
 module.exports = {
   server:server,
   authorization:authorization,
   authorize_pre:authorize_pre,
   userinfo:userinfo,
   token_pre:token_pre,
+  logout:logout,
 };
